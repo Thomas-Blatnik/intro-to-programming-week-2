@@ -11,6 +11,14 @@ import { AboutUsComponent } from './features/about-us/about-us.component';
 import { PeopleListComponent } from './features/gift-giving/components/people-list/people-list.component';
 import { HttpClientModule } from '@angular/common/http';
 import { PersonDataService } from './services/people-data.service';
+import { PeopleEntryComponent } from './features/gift-giving/components/people-entry/people-entry.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { reducers } from './state';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { EffectsModule } from '@ngrx/effects'
+import { PeopleEffects } from './state/effects/peope-effects';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -19,12 +27,17 @@ import { PersonDataService } from './services/people-data.service';
     DashboardComponent,
     GiftGivingComponent,
     AboutUsComponent,
-    PeopleListComponent
+    PeopleListComponent,
+    PeopleEntryComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule,
+    StoreModule.forRoot(reducers),
+    StoreDevtoolsModule.instrument(),
+    EffectsModule.forRoot([PeopleEffects])
   ],
   providers: [PersonDataService],
   bootstrap: [AppComponent]
