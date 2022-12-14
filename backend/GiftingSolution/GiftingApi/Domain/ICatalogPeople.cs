@@ -1,7 +1,8 @@
-﻿namespace GiftingApi.Domain
+﻿namespace GiftingApi.Domain;
+
+public interface ICatalogPeople
 {
-    public interface ICatalogPeople
-    {
-        public Task<PersonResponse> GetPeopleAsync();
-    }
+    Task<PersonItemResponse> AddPersonAsync(PersonCreateRequest request);
+    Task<PersonResponse> GetPeopleAsync();
+    Task<PersonItemResponse?> GetPersonByIdAsync(int id);
 }
