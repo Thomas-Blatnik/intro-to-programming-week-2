@@ -4,10 +4,12 @@ public class PeopleController : ControllerBase
 {
 
     private readonly ICatalogPeople _personCatalog;
+    private readonly ILogger _logger;
 
-    public PeopleController(ICatalogPeople personCatalog)
+    public PeopleController(ICatalogPeople personCatalog, ILogger logger)
     {
         _personCatalog = personCatalog;
+        _logger = logger;
     }
 
     [HttpGet("/people/{id:int}")]
@@ -47,9 +49,19 @@ public class PeopleController : ControllerBase
 
     // GET /people
     [HttpGet("/people")]
-    public async Task<ActionResult<PersonResponse>> GetAllPeople()
+    public async Task<ActionResult<PersonResponse>> GetAllPeople(CancellationToken token)
     {
-        PersonResponse response = await _personCatalog.GetPeopleAsync();
-        return Ok(response);
+        try
+        {
+            _logger.LogInformation("Got a request to get some people...");
+            PersonResponse response = await _personCatalog.GetPeopleAsync(token);
+            _logger.LogInformation($"Got some people from the DB {response.Data.Count} persons");
+            return Ok(response);
+        }
+        catch (TaskCanceledException)
+        {
+            _logger.LogInformation("Fine. They hung up. No reason to send a response.");
+            return BadRequest();
+        }
     }
 }
