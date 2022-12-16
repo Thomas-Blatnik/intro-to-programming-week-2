@@ -1,0 +1,120 @@
+dapiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: "2022-12-16T20:15:29Z"
+  generateName: oncall-developer-api-75f66645bf-
+  labels:
+    app: oncall-developer-api
+    pod-template-hash: 75f66645bf
+  name: oncall-developer-api-75f66645bf-6brmz
+  namespace: gifting
+  ownerReferences:
+  - apiVersion: apps/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: ReplicaSet
+    name: oncall-developer-api-75f66645bf
+    uid: 72dd917f-6363-45ad-ad19-1bae05d4dacf
+  resourceVersion: "6421"
+  uid: cde2e2f0-0768-4ab7-bba9-c73a80896633
+spec:
+  containers:
+  - image: thomasblatnik/oncall-developer-api-dec-2022
+    imagePullPolicy: Always
+    name: oncall-developer-api
+    ports:
+    - containerPort: 80
+      protocol: TCP
+    resources:
+      limits:
+        cpu: 1500m
+        memory: 256Mi
+      requests:
+        cpu: 500m
+        memory: 128Mi
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-cph44
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  nodeName: docker-desktop
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - name: kube-api-access-cph44
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+            path: namespace
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2022-12-16T20:15:29Z"
+    status: "True"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: "2022-12-16T20:15:29Z"
+    message: 'containers with unready status: [oncall-developer-api]'
+    reason: ContainersNotReady
+    status: "False"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2022-12-16T20:15:29Z"
+    message: 'containers with unready status: [oncall-developer-api]'
+    reason: ContainersNotReady
+    status: "False"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2022-12-16T20:15:29Z"
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - image: thomasblatnik/oncall-developer-api-dec-2022
+    imageID: ""
+    lastState: {}
+    name: oncall-developer-api
+    ready: false
+    restartCount: 0
+    started: false
+    state:
+      waiting:
+        message: Back-off pulling image "thomasblatnik/oncall-developer-api-dec-2022"
+        reason: ImagePullBackOff
+  hostIP: 192.168.65.4
+  phase: Pending
+  podIP: 10.1.0.7
+  podIPs:
+  - ip: 10.1.0.7
+  qosClass: Burstable
+  startTime: "2022-12-16T20:15:29Z"
